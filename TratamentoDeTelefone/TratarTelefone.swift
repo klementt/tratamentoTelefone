@@ -39,11 +39,11 @@ public class TratarTelefone: NSObject {
      Reponsável por receber uma string e fazê-la adequar-se ao padrão de telefone (__) _____-____
      - parameter telefone : aksjdhad
      */
-    func formatarTelefone(telefone: String) -> String {
+    public func formatarTelefone(telefone: String) -> String {
         let qtdCaracteres = telefone.characters.count
         var novoTelefone: String
         
-        if qtdCaracteres != 11 || qtdCaracteres != 10 {
+        if qtdCaracteres != 11 && qtdCaracteres != 10 {
             return "A quantidade de caracteres no telefone está inválida. É preciso ter 11 ou 10 números"
         }
         
@@ -52,12 +52,25 @@ public class TratarTelefone: NSObject {
             novoTelefone = telefone.replacingOccurrences(of: " ", with: "") //tira espaço em branco
             
             // Usar essa expresão: ^\([1-9]{2}\) [2-9][0-9]{3,4}\-[0-9]{4}$
-            var regex: String = "^\\([1-9]{2}\\) [2-9][0-9]{3,4}\\-[0-9]{4}$"
+            var regexPattern: String = "^\\([1-9]{2}\\) [2-9][0-9]{3,4}\\-[0-9]{4}$"
+            var regex: NSRegularExpression?
             
-            if let range = novoTelefone.range(of:regex, options: .regularExpression) {
-                let result = novoTelefone.substring(with:range)
+            
+            do {
+                regex = try NSRegularExpression(pattern: regexPattern, options: NSRegularExpression.Options.anchorsMatchLines)
+            } catch let error {
+                print(error.localizedDescription)
             }
-            return novoTelefone
+            
+            
+            let result: NSMutableString = novoTelefone as! NSMutableString
+            
+            let retorno = regex?.stringByReplacingMatches(in: novoTelefone, options: [], range: NSMakeRange(0, novoTelefone.characters.count), withTemplate: "XX")
+            
+//            if let range = novoTelefone.range(of:regex, options: .regularExpression) {
+//                novoTelefone = novoTelefone.substring(with:range)
+//            }
+            return retorno!
         } else {
             return "O número deve conter somente números"
         }
