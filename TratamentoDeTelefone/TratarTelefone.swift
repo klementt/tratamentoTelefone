@@ -6,4 +6,16 @@
 //  Copyright © 2017 Matheus Azevedo. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+public class TratarTelefone: NSObject {
+    
+    var telefone: String?
+    
+    internal override init() {
+        super.init()
+    }
+    
+    
+    
+}
